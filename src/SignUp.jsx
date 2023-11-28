@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+
 
 const Signup = () => {
   const backimg = {
@@ -33,22 +35,46 @@ const Signup = () => {
     borderWidth: '12px',
     borderColor: 'skyBlue',
   };
+  const navigate = useNavigate();
 
   const atag = {
     paddingLeft: '130px',
     color: 'blue',
-  };
-
-  
-  const navigate = useNavigate();
-
-
-
-  const logg = (event) => {
-    event.preventDefault();
-    navigate('/Login');
     
   };
+
+  const[name,setname]=useState('');
+  const[number,setnumber]=useState('');
+  const[email,setemail]=useState('');
+  const[password,setpassword]=useState('');
+  const[acc,setacc]=useState('');
+
+
+  const exist=()=>{
+    navigate('/Login');
+  }
+
+
+
+
+  const handleSubmit=async()=>{
+    try
+    {
+      navigate('/Login');
+      const response = await axios.post("http://localhost:3017/users",{
+        Name:name,
+        Number:number,
+        Email:email,
+        Password:password,
+        Accno:acc,
+  });
+    }
+  catch(error)
+  {
+  console.error('this is a error',error)
+    }
+  }
+  
 
   return (
     <>
@@ -58,25 +84,25 @@ const Signup = () => {
           Sign Up
         </h2>
 
-        <form>
-          <input type="text" placeholder="Enter Name :" style={inputStyle}  required></input>
+        <form onSubmit={handleSubmit}>
+          <input type="text" placeholder="Enter Name :"  style={inputStyle} value={name} onChange={e=>setname(e.target.value)}  required></input>
           <br></br>
-          <input type="text" placeholder="Enter Email ID :" style={inputStyle} required></input>
+          <input type="email" placeholder="Enter Email ID :" style={inputStyle} value={email} onChange={e=>setemail(e.target.value)} required></input>
           <br></br>
-          <input type="text" placeholder="Enter Contact No :" style={inputStyle} required></input>
+          <input type="text" placeholder="Enter Contact No :" style={inputStyle} value={number} onChange={e=>setnumber(e.target.value)}  required></input>
           <br></br>
-          <input type="email" placeholder="Enter Acc No :" style={inputStyle} required></input>
+          <input type="text" placeholder="Enter Acc No :" style={inputStyle}  value={acc} onChange={e=>setacc(e.target.value)} required></input>
           <br></br>
-          <input type="password" placeholder="Set Password :"  style={inputStyle} required></input>
+          <input type="password" placeholder="Set Password :"  style={inputStyle}   value={password} onChange={e=>setpassword(e.target.value)} required></input>
           <br></br>
           <input type="password" placeholder="Confirm Password :"  style={inputStyle} required></input>
           <br></br>
-          <a href="k" style={atag}>
+          <a href="k" style={atag} onClick={exist}>
             <b>Existing User?</b>
           </a>
           <br></br>
           <br></br>
-          <button style={BStyle} onClick={logg}>
+          <button style={BStyle} type='submit' >
             <b>
               <h3>Sign Up</h3>
             </b>

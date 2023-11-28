@@ -10,8 +10,8 @@ import Signup from "./SignUp";
 const Routing = () => {
   return (
     <Routes>
-      <Route path='/' element={<Navbar/>} />
-     <Route path='/Sign' element={<Signup/>}/>
+      <Route path='/Home' element={<Navbar/>} />
+     <Route path='/' element={<Signup/>}/>
       <Route path="/Login" element={<Login/>} />
     
    

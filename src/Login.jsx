@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'; // Import the user icon
+import  { useState } from 'react';
+import axios from 'axios';
 
 const Login = () => {
   const backimg = {
@@ -39,7 +41,9 @@ const Login = () => {
   };
   
 
-  
+  const [acc,setacc]=useState('');
+  const [number,setnumber]=useState('');
+
 
   const navigate = useNavigate();
 
@@ -50,18 +54,71 @@ const Login = () => {
     navigate('/');
   }
 
+
+  const handleSubmit=(e)=>{
+    console.log(number+" s");
+    console.log(acc);
+    e.preventDefault();
+    if(Validate())
+    {
+      axios.get(" http://localhost:3017/users")
+      .then(result=>{
+        result.data.map(user=>{
+          if(user.Accno===acc)
+          {
+            if(user.Password===number)
+            {
+    navigate('/Home')
+            alert("Succesfull LOGIN")
+            return(<><p>good</p></>)
+            }
+            else{
+              alert("Wrong Password or email");
+            }
+          }
+          else{
+            alert("Wrong Password or email");
+          }
+         
+        })
+      })
+    }
+    
+    
+    
+    }
+    
+const Validate=()=>{
+  let result=true;
+  if(acc===''||acc===null)
+  {
+      result=false;
+      console.log('name enter'); 
+  }
+  
+  if(number===''||number===null)
+  {
+      result=false;
+      console.log('enter pass ');
+  }
+  return result;
+}
+
+
+
+
   return (
     <>
       <div style={backimg}>
         <h2 style={{ color: 'white', fontFamily: 'Roboto' }}>
           <FontAwesomeIcon icon={faUser} style={{ marginRight: '10px' }} /> Login Page
         </h2>
-        <form>
-          <input type="text" placeholder="Enter Account No" style={inputStyle} ></input>
+        <form onSubmit={handleSubmit}>
+          <input type="text" placeholder="Enter Account No"  value={acc} onChange={e=>setacc(e.target.value)} style={inputStyle} ></input>
 
           <br></br>
           <br></br>
-          <input type="password" placeholder="PIN"  style={inputStyle}></input>
+          <input type="password" placeholder="PIN" value={number} onChange={e=>setnumber(e.target.value)} style={inputStyle}></input>
 
           <br></br>
           <a href="k" style={atag}>
@@ -70,7 +127,7 @@ const Login = () => {
 
           <br></br>
           <br></br>
-          <button style={BStyle} onClick={logg} >
+          <button style={BStyle} type='submit' >
             <b>
               <h3>Login</h3>
             </b>

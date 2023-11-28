@@ -25,6 +25,39 @@ const Navbar = () => {
       setAtmBranchLocation({ lat: 40.7128, lng: -74.0060 }); // Example coordinates for New York City
     }
   };
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    accountType: 'savings',
+    initialDeposit: '',
+    address: '',
+    phoneNumber: '',
+  });
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Perform actions with form data (e.g., submit to a server)
+    console.log('Form submitted:', formData);
+    // Reset form data after submission
+    setFormData({
+      firstName: '',
+      lastName: '',
+      accountType: 'savings',
+      initialDeposit: '',
+      address: '',
+      phoneNumber: '',
+    });
+  };
 
   const navbarStyle = {
     backgroundColor: 'skyBlue',
@@ -33,7 +66,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const logg = (event) => {
     event.preventDefault();
-    navigate('/Sign');
+    navigate('/Login');
     
   };
   const ulStyle = {
@@ -237,50 +270,82 @@ const Navbar = () => {
             )}
           </div>
         );
-        case 'Language':
-  return (
-    <div style={lang}>
-      <h2>Language Options</h2>
-      <p>Explore language preferences for a personalized banking experience.</p>
-      <p>Select your preferred language from the options below:</p>
-
-      <div>
-        <h3>English</h3>
-        <p>Our default language for a seamless banking experience.</p>
-        <p>
-          <FaLanguage /> Fluent in English? Stick with our default language.
-        </p>
-      </div>
-
-      <div>
-        <h3>Spanish</h3>
-        <p>¡Hola! Choose Spanish for a language-friendly banking journey.</p>
-        <p>
-          <FaLanguage /> ¿Hablas español? Explore our services in Spanish.
-        </p>
-      </div>
-
-      <div>
-        <h3>French</h3>
-        <p>Bienvenue! Opt for French for a sophisticated banking experience.</p>
-        <p>
-          <FaLanguage /> Parlez-vous français? Enjoy our services in French.
-        </p>
-      </div>
-
-      <div>
-        <h3>Other Languages</h3>
-        <p>Discover additional language options to suit your preferences.</p>
-        <p>
-          <FaLanguage /> Explore more language choices tailored for you.
-        </p>
-      </div>
-    </div>
-  );
-
+      
       // ... (existing cases)
       default:
-        return <div>Select a navigation item</div>;
+        return <div>
+
+<form onSubmit={handleSubmit}>
+      <label>
+        First Name:
+        <input
+          type="text"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleInputChange}
+          required
+        />
+      </label>
+
+      <label>
+        Last Name:
+        <input
+          type="text"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleInputChange}
+          required
+        />
+      </label>
+
+      <label>
+        Account Type:
+        <select
+          name="accountType"
+          value={formData.accountType}
+          onChange={handleInputChange}
+        >
+          <option value="savings">Savings</option>
+          <option value="checking">Checking</option>
+        </select>
+      </label>
+
+      <label>
+        Initial Deposit:
+        <input
+          type="number"
+          name="initialDeposit"
+          value={formData.initialDeposit}
+          onChange={handleInputChange}
+          required
+        />
+      </label>
+
+      <label>
+        Address:
+        <textarea
+          name="address"
+          value={formData.address}
+          onChange={handleInputChange}
+          required
+        />
+      </label>
+
+      <label>
+        Phone Number:
+        <input
+          type="tel"
+          name="phoneNumber"
+          value={formData.phoneNumber}
+          onChange={handleInputChange}
+          required
+        />
+      </label>
+
+      <button type="submit">Submit</button>
+    </form>
+  
+          </div>;
     }
   };
 
@@ -289,7 +354,7 @@ const Navbar = () => {
       <div style={liStyle} onClick={() => handleNavItemClick('Login')}>
         <FaSignInAlt />
         <a href="#" style={linkStyle} onClick={logg}>
-          Sign Up
+          Sign Out
         </a>
       </div>
     );
@@ -326,7 +391,7 @@ const Navbar = () => {
           <li style={liStyle} onClick={() => handleNavItemClick('Language')}>
             <FaLanguage />
             <a href="#" style={{ ...linkStyle, ...linkHoverStyle }}>
-              Language
+              Customer Info
             </a>
           </li>
           <Login />
